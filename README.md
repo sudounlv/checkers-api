@@ -1,0 +1,4 @@
+checkers-api
+============
+
+Checkers API

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Game">
+
+	<resultMap id="GameResult" class="com.richardhoppes.checkers.model.Game">
+		<result property="id" column="id"/>
+		<result property="guid" column="guid"/>
+		<result property="status" column="status"/>
+		<result property="result" column="result"/>
+		<result property="title" column="strTitle"/>
+		<result property="createdAt" column="created_at"/>
+		<result property="modifiedAt" column="modified_at"/>
+	</resultMap>
+
+	<select id="getGameById" parameterClass="java.lang.Integer" resultMap="Game.GameResult">
+		/* Game.getGameById*/
+		SELECT *
+		FROM game
+		WHERE id = #value#
+	</select>
+
+	<select id="getGameByGuid" parameterClass="java.lang.String" resultMap="Game.GameResult">
+		/* Game.getGameByGuid*/
+		SELECT *
+		FROM game
+		WHERE guid = #value#
+	</select>
+
+	<insert id="insertGame" parameterClass="java.lang.String">
+		/* Game.insertGame */
+		INSERT INTO game (guid, created_at, modified_at)
+		VALUES (#value#, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())
+		<selectKey resultClass="int" type="post" keyProperty="intId">
+			SELECT LAST_INSERT_ID() AS value
+		</selectKey>
+	</insert>
+
+	<update id="updateGame" parameterClass="java.util.Map">
+		/* Game.updateGame */
+		UPDATE game SET
+			<isNotNull property="status">
+				status = #status#,
+			</isNotNull>
+			<isNotNull property="result">
+				result = #result#,
+			</isNotNull>
+			dateModifiedAt = UNIX_TIMESTAMP()
+		WHERE
+			intId = #id#
+	</update>
+
+</sqlMap>
