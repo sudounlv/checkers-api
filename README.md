@@ -1,6 +1,17 @@
 checkers-api
 ============
 
+**Build:**
+mvn clean install
+
+**Run:**
+mvn jetty:run -Dapp.mode=dev|prod
+
+**Test:**
+http://localhost:2020/heartbeat/detail
+
+*****
+
 **POST:** /game/create
 
 **Example Response:**
