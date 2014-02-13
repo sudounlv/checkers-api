@@ -1,11 +1,9 @@
 checkers-api
 ============
 
-Checkers API
+**POST:** /game/create
 
-POST: /game/create
-
-Example Response:
+**Example Response:**
 
 {
    "game":{
@@ -162,9 +160,9 @@ Example Response:
 }
 
 
-GET: /game/{$id}
+**GET:** /game/{$id}
 
-Example Response:
+**Example Response:**
 
 {
    "game":{
