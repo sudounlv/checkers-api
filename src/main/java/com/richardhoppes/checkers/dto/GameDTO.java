@@ -1,30 +1,39 @@
 package com.richardhoppes.checkers.dto;
 
-import com.richardhoppes.checkers.model.Game;
-import com.richardhoppes.checkers.model.Piece;
-
-import java.util.List;
+import com.richardhoppes.checkers.model.value.PieceColor;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 public class GameDTO {
 
-	private Game game;
-	private List<Piece> pieces;
+	private String id;
+	private PieceColor turn;
+	private BoardDTO board;
 
-	public GameDTO(Game game, List<Piece> pieces) {
-		this.game = game;
-		this.pieces = pieces;
+	@JsonProperty("id")
+	public String getId() {
+		return id;
 	}
 
-	public Game getGame() {
-		return game;
+	public void setId(String id) {
+		this.id = id;
 	}
 
-	public void setGame(Game game) {
-		this.game = game;
+	@JsonProperty("turn")
+	public PieceColor getTurn() {
+		return turn;
 	}
 
-	public List<Piece> getPieces() {
-		return pieces;
+	public void setTurn(PieceColor turn) {
+		this.turn = turn;
+	}
+
+	@JsonProperty("board")
+	public BoardDTO getBoard() {
+		return board;
+	}
+
+	public void setBoard(BoardDTO board) {
+		this.board = board;
 	}
 
 }

@@ -6,8 +6,9 @@
 	<resultMap id="GameResult" class="com.richardhoppes.checkers.model.Game">
 		<result property="id" column="id"/>
 		<result property="guid" column="guid"/>
+		<result property="turn" column="turn"/>
 		<result property="status" column="status"/>
-		<result property="result" column="result"/>
+		<result property="winner" column="winner"/>
 		<result property="createdAt" column="created_at"/>
 		<result property="modifiedAt" column="modified_at"/>
 	</resultMap>
@@ -28,8 +29,8 @@
 
 	<insert id="insertGame" parameterClass="java.util.Map">
 		/* Game.insertGame */
-		INSERT INTO game (guid, status, result, created_at, modified_at)
-		VALUES (UUID(), #status#, #result#, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())
+		INSERT INTO game (guid, status, winner, created_at, modified_at)
+		VALUES (UUID(), #status#, #winner#, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())
 		<selectKey resultClass="int" type="post" keyProperty="id">
 			SELECT LAST_INSERT_ID() AS value
 		</selectKey>
@@ -41,8 +42,11 @@
 			<isNotNull property="status">
 				status = #status#,
 			</isNotNull>
-			<isNotNull property="result">
-				result = #result#,
+			<isNotNull property="winner">
+				winner = #winner#,
+			</isNotNull>
+			<isNotNull property="turn">
+				turn = #turn#,
 			</isNotNull>
 			dateModifiedAt = UNIX_TIMESTAMP()
 		WHERE

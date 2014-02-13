@@ -1,11 +1,7 @@
 package com.richardhoppes.checkers.dao;
 
-import com.richardhoppes.checkers.model.Game;
 import com.richardhoppes.checkers.model.Piece;
-import com.richardhoppes.checkers.model.value.GameResult;
-import com.richardhoppes.checkers.model.value.GameStatus;
 import com.richardhoppes.checkers.model.value.PieceColor;
-import com.richardhoppes.checkers.model.value.PieceStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
@@ -43,7 +39,7 @@ public class PieceDAO extends SqlMapClientDaoSupport{
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("gameId", gameId);
 		params.put("color", color);
-		params.put("status", PieceStatus.PEON);
+		params.put("isKing", 0);
 		params.put("currentPosition", currentPosition);
 
 		Piece piece = null;
@@ -57,14 +53,14 @@ public class PieceDAO extends SqlMapClientDaoSupport{
 		return piece;
 	}
 
-	public Piece updatePiece(Integer id, PieceStatus status, Integer currentPosition) {
+	public Piece updatePiece(Integer id, Boolean isKing, Integer currentPosition) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
 
-		if(status != null) {
-			params.put("status", status);
+		if(isKing != null) {
+			params.put("isKing", isKing);
 		} else {
-			params.put("status", null);
+			params.put("isKing", null);
 		}
 
 		if(currentPosition != null) {

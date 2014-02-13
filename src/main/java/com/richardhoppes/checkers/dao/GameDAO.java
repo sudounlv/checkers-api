@@ -1,8 +1,9 @@
 package com.richardhoppes.checkers.dao;
 
-import com.richardhoppes.checkers.model.value.GameResult;
+import com.richardhoppes.checkers.model.value.GameWinner;
 import com.richardhoppes.checkers.model.value.GameStatus;
 import com.richardhoppes.checkers.model.Game;
+import com.richardhoppes.checkers.model.value.PieceColor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
@@ -37,7 +38,7 @@ public class GameDAO extends SqlMapClientDaoSupport{
 
 	public Game createGame() {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("result", GameResult.NONE);
+		params.put("winner", GameWinner.NONE);
 		params.put("status", GameStatus.IN_PROGRESS);
 
 		Game game = null;
@@ -51,20 +52,26 @@ public class GameDAO extends SqlMapClientDaoSupport{
 		return game;
 	}
 
-	public Game updateGame(Integer id, GameResult result, GameStatus status) {
+	public Game updateGame(Integer id, GameWinner winner, GameStatus status, PieceColor turn) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
 
-		if(result != null) {
-			params.put("result", result);
+		if(winner != null) {
+			params.put("winner", winner);
 		} else {
-			params.put("result", null);
+			params.put("winner", null);
 		}
 
 		if(status != null) {
 			params.put("status", status);
 		} else {
 			params.put("status", null);
+		}
+
+		if(turn != null) {
+			params.put("turn", turn);
+		} else {
+			params.put("turn", null);
 		}
 
 		Game game = null;

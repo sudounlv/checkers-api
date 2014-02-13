@@ -1,11 +1,12 @@
 package com.richardhoppes.checkers.service;
 
 import com.richardhoppes.checkers.dao.GameDAO;
+import com.richardhoppes.checkers.dto.BoardDTO;
 import com.richardhoppes.checkers.dto.GameDTO;
+import com.richardhoppes.checkers.dto.LocationDTO;
+import com.richardhoppes.checkers.dto.PieceDTO;
 import com.richardhoppes.checkers.model.Game;
 import com.richardhoppes.checkers.model.Piece;
-import com.richardhoppes.checkers.model.value.GameResult;
-import com.richardhoppes.checkers.model.value.GameStatus;
 
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class GameServiceImpl implements GameService {
 		if (game != null)
 			pieces = pieceService.getPiecesByGameId(game.getId());
 
-		return new GameDTO(game, pieces);
+		return buildGameDTO(game, pieces);
 	}
 
 	@Override
@@ -44,31 +45,34 @@ public class GameServiceImpl implements GameService {
 		if (game != null)
 			pieces = pieceService.createPieces(game.getId());
 
-		return new GameDTO(game, pieces);
+		return buildGameDTO(game, pieces);
 	}
 
-	@Override
-	public GameDTO updateGameStatus(Integer id, GameStatus status) {
-		//Game game = gameDAO.updateGame(id, null, status);
-		//List<Piece> pieces = pieceService.getPiecesByGameId(id);
-		//return new GameDTO(game, pieces);
-		return null;
-	}
+	private GameDTO buildGameDTO(Game game, List<Piece> pieces) {
+		if (game == null)
+			return null;
 
-	@Override
-	public GameDTO updateGameResult(Integer id, GameResult result) {
-		//Game game = gameDAO.updateGame(id, result, null);
-		//List<Piece> pieces = pieceService.getPiecesByGameId(id);
-		//return new GameDTO(game, pieces);
-		return null;
-	}
+		GameDTO gameDTO = new GameDTO();
+		gameDTO.setId(game.getGuid());
+		gameDTO.setTurn(game.getTurn());
 
-	@Override
-	public GameDTO updateGameResultAndStatus(Integer id, GameResult result, GameStatus status) {
-		//Game game = gameDAO.updateGame(id, result, status);
-		//List<Piece> pieces = pieceService.getPiecesByGameId(id);
-		//return new GameDTO(game, pieces);
-		return null;
+		BoardDTO boardDTO = new BoardDTO();
+		boardDTO.setSpacesPerSide(8); // This probably won't ever change
+
+		for (Piece piece : pieces) {
+			PieceDTO pieceDTO = new PieceDTO();
+			pieceDTO.setKing(piece.getKing());
+			pieceDTO.setPieceColor(piece.getColor());
+
+			LocationDTO locationDTO = new LocationDTO();
+			locationDTO.setPosition(piece.getCurrentPosition());
+
+			pieceDTO.setLocation(locationDTO);
+			boardDTO.getPieces().add(pieceDTO);
+		}
+
+		gameDTO.setBoard(boardDTO);
+		return gameDTO;
 	}
 
 	public GameDAO getGameDAO() {

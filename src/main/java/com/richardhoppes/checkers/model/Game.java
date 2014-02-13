@@ -1,17 +1,16 @@
 package com.richardhoppes.checkers.model;
 
-import com.richardhoppes.checkers.model.value.GameResult;
+import com.richardhoppes.checkers.model.value.GameWinner;
 import com.richardhoppes.checkers.model.value.GameStatus;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.richardhoppes.checkers.model.value.PieceColor;
 
 import java.util.Date;
 
-@JsonIgnoreProperties({ "createdAt", "modifiedAt" })
 public class Game {
 	private Integer id;
 	private String guid;
-	private GameResult result;
+	private PieceColor turn;
+	private GameWinner winner;
 	private GameStatus status;
 	private Date createdAt;
 	private Date modifiedAt;
@@ -24,7 +23,6 @@ public class Game {
 		this.id = id;
 	}
 
-	@JsonProperty("id")
 	public String getGuid() {
 		return guid;
 	}
@@ -33,16 +31,14 @@ public class Game {
 		this.guid = guid;
 	}
 
-	@JsonProperty("result")
-	public GameResult getResult() {
-		return result;
+	public GameWinner getWinner() {
+		return winner;
 	}
 
-	public void setResult(GameResult result) {
-		this.result = result;
+	public void setWinner(GameWinner winner) {
+		this.winner = winner;
 	}
 
-	@JsonProperty("status")
 	public GameStatus getStatus() {
 		return status;
 	}
@@ -65,5 +61,13 @@ public class Game {
 
 	public void setModifiedAt(Date modifiedAt) {
 		this.modifiedAt = modifiedAt;
+	}
+
+	public PieceColor getTurn() {
+		return turn;
+	}
+
+	public void setTurn(PieceColor turn) {
+		this.turn = turn;
 	}
 }
