@@ -7,5 +7,6 @@
 	<settings useStatementNamespaces="true" lazyLoadingEnabled="false"/>
 
 	<sqlMap resource="sqlmap/game.xml"/>
+	<sqlMap resource="sqlmap/piece.xml"/>
 
 </sqlMapConfig>

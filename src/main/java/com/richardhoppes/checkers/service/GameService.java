@@ -1,14 +1,15 @@
 package com.richardhoppes.checkers.service;
 
 import com.richardhoppes.checkers.dto.GameDTO;
+import com.richardhoppes.checkers.model.Game;
 import com.richardhoppes.checkers.model.value.GameResult;
 import com.richardhoppes.checkers.model.value.GameStatus;
 
 public interface GameService {
 
-	public com.richardhoppes.checkers.model.Game getGameById(Integer id);
+	public Game getGameById(Integer id);
 
-	public com.richardhoppes.checkers.model.Game getGameByGuid(String guid);
+	public Game getGameByGuid(String guid);
 
 	public GameDTO getGameBoardByGuid(String gameGuid);
 

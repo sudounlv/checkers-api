@@ -2,15 +2,18 @@ package com.richardhoppes.checkers.service;
 
 import com.richardhoppes.checkers.dao.GameDAO;
 import com.richardhoppes.checkers.dto.GameDTO;
+import com.richardhoppes.checkers.model.Game;
+import com.richardhoppes.checkers.model.Piece;
 import com.richardhoppes.checkers.model.value.GameResult;
 import com.richardhoppes.checkers.model.value.GameStatus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 public class GameServiceImpl implements GameService {
-	private Logger log = LoggerFactory.getLogger(this.getClass());
 
 	GameDAO gameDAO;
+
+	PieceService pieceService;
 
 	@Override
 	public com.richardhoppes.checkers.model.Game getGameById(Integer id) {
@@ -24,42 +27,42 @@ public class GameServiceImpl implements GameService {
 
 	@Override
 	public GameDTO getGameBoardByGuid(String guid) {
-		com.richardhoppes.checkers.model.Game game = gameDAO.getGameByGuid(guid);
+		Game game = gameDAO.getGameByGuid(guid);
+		List<Piece> pieces = pieceService.getPiecesByGameId(game.getId());
 
-		// Create game board...
-		return null;
+		return new GameDTO(game, pieces);
 	}
 
 	@Override
 	public GameDTO createGame() {
-		com.richardhoppes.checkers.model.Game game = gameDAO.createGame();
+		Game game = gameDAO.createGame();
+		List<Piece> pieces = pieceService.createPieces(game.getId());
 
-		// Create game board...
-		return null;
+		return new GameDTO(game, pieces);
 	}
 
 	@Override
 	public GameDTO updateGameStatus(Integer id, GameStatus status) {
-		com.richardhoppes.checkers.model.Game game = gameDAO.updateGame(id, null, status);
+		Game game = gameDAO.updateGame(id, null, status);
+		List<Piece> pieces = pieceService.getPiecesByGameId(id);
 
-		// Create game board
-		return null;
+		return new GameDTO(game, pieces);
 	}
 
 	@Override
 	public GameDTO updateGameResult(Integer id, GameResult result) {
-		com.richardhoppes.checkers.model.Game game = gameDAO.updateGame(id, result, null);
+		Game game = gameDAO.updateGame(id, result, null);
+		List<Piece> pieces = pieceService.getPiecesByGameId(id);
 
-		// Create game board
-		return null;
+		return new GameDTO(game, pieces);
 	}
 
 	@Override
 	public GameDTO updateGameResultAndStatus(Integer id, GameResult result, GameStatus status) {
-		com.richardhoppes.checkers.model.Game game = gameDAO.updateGame(id, result, status);
+		Game game = gameDAO.updateGame(id, result, status);
+		List<Piece> pieces = pieceService.getPiecesByGameId(id);
 
-		// Create game board
-		return null;
+		return new GameDTO(game, pieces);
 	}
 
 	public GameDAO getGameDAO() {
@@ -68,6 +71,14 @@ public class GameServiceImpl implements GameService {
 
 	public void setGameDAO(GameDAO gameDAO) {
 		this.gameDAO = gameDAO;
+	}
+
+	public PieceService getPieceService() {
+		return pieceService;
+	}
+
+	public void setPieceService(PieceService pieceService) {
+		this.pieceService = pieceService;
 	}
 
 }

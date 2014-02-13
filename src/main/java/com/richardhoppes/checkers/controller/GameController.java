@@ -23,23 +23,24 @@ public class GameController extends AbstractBaseController {
 		throw new ResourceNotFoundException("Game not found");
 	}
 
-	@RequestMapping(value = "/game/{gameId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/game/{id}", method = RequestMethod.GET)
 	public @ResponseBody
-	GameDTO actionGetGame(@PathVariable String gameId)
-			throws ResourceNotFoundException {
-
-		GameDTO gameBoard = gameService.getGameBoardByGuid(gameId);
-		if(gameBoard == null) {
+	GameDTO actionGetGame(@PathVariable String id) throws ResourceNotFoundException {
+		GameDTO gameDto = gameService.getGameBoardByGuid(id);
+		if(gameDto == null) {
 			throw new ResourceNotFoundException("Game not found");
 		}
-
-		return gameBoard;
+		return gameDto;
 	}
 
-	@RequestMapping(value = "/game/create", method = RequestMethod.GET)
+	@RequestMapping(value = "/game/create", method = {RequestMethod.GET, RequestMethod.POST})
 	public @ResponseBody
-	GameDTO actionGetGame() {
-		return gameService.createGame();
+	GameDTO actionGetGame() throws ResourceNotFoundException {
+		GameDTO gameDto = gameService.createGame();
+		if(gameDto == null) {
+			throw new ResourceNotFoundException("Error retrieving game after creation.");
+		}
+		return gameDto;
 	}
 
 	@InitBinder

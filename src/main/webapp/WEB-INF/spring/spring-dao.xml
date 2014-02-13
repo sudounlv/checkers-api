@@ -9,4 +9,8 @@
 		<property name="sqlMapClient" ref="readWriteSqlMapClient"/>
 	</bean>
 
+	<bean id="pieceDAO" class="com.richardhoppes.checkers.dao.PieceDAO">
+		<property name="sqlMapClient" ref="readWriteSqlMapClient"/>
+	</bean>
+
 </beans>

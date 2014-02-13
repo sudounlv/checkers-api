@@ -2,10 +2,12 @@ package com.richardhoppes.checkers.model;
 
 import com.richardhoppes.checkers.model.value.GameResult;
 import com.richardhoppes.checkers.model.value.GameStatus;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.Date;
 
+@JsonIgnoreProperties({ "createdAt", "modifiedAt" })
 public class Game {
 	private Integer id;
 	private String guid;
@@ -49,7 +51,6 @@ public class Game {
 		this.status = status;
 	}
 
-	@JsonProperty("createdAt")
 	public Date getCreatedAt() {
 		return createdAt;
 	}
@@ -58,7 +59,6 @@ public class Game {
 		this.createdAt = createdAt;
 	}
 
-	@JsonProperty("modifiedAt")
 	public Date getModifiedAt() {
 		return modifiedAt;
 	}

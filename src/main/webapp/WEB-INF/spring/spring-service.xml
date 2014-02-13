@@ -7,6 +7,11 @@
 
 	<bean id="reviewService" class="com.richardhoppes.checkers.service.GameServiceImpl">
 		<property name="gameDAO" ref="gameDAO" />
+		<property name="pieceService" ref="pieceService" />
+	</bean>
+
+	<bean id="pieceService" class="com.richardhoppes.checkers.service.PieceServiceImpl">
+		<property name="pieceDAO" ref="pieceDAO" />
 	</bean>
 
 </beans>

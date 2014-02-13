@@ -18,7 +18,7 @@ public class GameDAO extends SqlMapClientDaoSupport{
 	public Game getGameById(Integer id) {
 		Game game = null;
 		try {
-			game = (Game) getSqlMapClient().queryForObject("Review.getReviewByTitleIdAndUserId", id);
+			game = (Game) getSqlMapClient().queryForObject("Game.getGameById", id);
 		} catch (SQLException e){
 			LOG.error("Error getting game by id: {}", e);
 		}
@@ -28,7 +28,7 @@ public class GameDAO extends SqlMapClientDaoSupport{
 	public Game getGameByGuid(String guid) {
 		Game game = null;
 		try {
-			game = (Game) getSqlMapClient().queryForObject("Review.getReviewByTitleIdAndUserId", guid);
+			game = (Game) getSqlMapClient().queryForObject("Game.getGameByGuid", guid);
 		} catch (SQLException e){
 			LOG.error("Error getting game by guid: {}", e);
 		}
@@ -36,15 +36,19 @@ public class GameDAO extends SqlMapClientDaoSupport{
 	}
 
 	public Game createGame() {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("result", GameResult.NONE);
+		params.put("status", GameStatus.IN_PROGRESS);
+
 		Game game = null;
 		try {
-			Integer id = (Integer) getSqlMapClient().insert("Game.insertGame");
+			Integer id = (Integer) getSqlMapClient().insert("Game.insertGame", params);
 			game = getGameById(id);
 		} catch (SQLException e){
 			LOG.error("Error creating game: {}", e);
 		}
-		return game;
 
+		return game;
 	}
 
 	public Game updateGame(Integer id, GameResult result, GameStatus status) {
@@ -70,6 +74,7 @@ public class GameDAO extends SqlMapClientDaoSupport{
 		} catch (SQLException e){
 			LOG.error("Error creating game: {}", e);
 		}
+
 		return game;
 	}
 

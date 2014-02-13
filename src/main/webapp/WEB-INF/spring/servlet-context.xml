@@ -26,7 +26,4 @@
 	<mvc:resources mapping="/*.htm/**" location="/WEB-INF/views/"/>
 	<mvc:resources mapping="/*.html/**" location="/WEB-INF/views/"/>
 
-	<!-- Validators -->
-	<bean id="getReviewsValidator" class="com.richardhoppes.checkers.validator.MoveValidator"/>
-
 </beans>
