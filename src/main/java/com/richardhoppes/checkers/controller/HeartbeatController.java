@@ -11,13 +11,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@RequestMapping(value="/heartbeat")
 public class HeartbeatController extends AbstractBaseController{
 
 	@Autowired
 	GameDAO developerDAO;
 
-	@RequestMapping(value="detail")
+	@RequestMapping(value="/heartbeat/detail")
 	public @ResponseBody Map<String, String> actionDetail() {
 		Map<String, String> retVal = new HashMap<String, String>();
 
@@ -36,7 +35,7 @@ public class HeartbeatController extends AbstractBaseController{
 		return retVal;
 	}
 
-	@RequestMapping(value="")
+	@RequestMapping(value={"/", "/heartbeat"})
 	public @ResponseBody Map<String, String> actionSimple() {
 		Map<String, String> retVal = new HashMap<String, String>();
 		retVal.put("status", "OK");

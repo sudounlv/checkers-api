@@ -27,7 +27,7 @@ public class GameController extends AbstractBaseController {
 	public @ResponseBody
 	GameDTO actionGetGame(@PathVariable String id) throws ResourceNotFoundException {
 		GameDTO gameDto = gameService.getGameBoardByGuid(id);
-		if(gameDto == null) {
+		if(gameDto == null || gameDto.getGame() == null) {
 			throw new ResourceNotFoundException("Game not found");
 		}
 		return gameDto;
@@ -37,7 +37,7 @@ public class GameController extends AbstractBaseController {
 	public @ResponseBody
 	GameDTO actionGetGame() throws ResourceNotFoundException {
 		GameDTO gameDto = gameService.createGame();
-		if(gameDto == null) {
+		if(gameDto == null || gameDto.getGame() == null) {
 			throw new ResourceNotFoundException("Error retrieving game after creation.");
 		}
 		return gameDto;

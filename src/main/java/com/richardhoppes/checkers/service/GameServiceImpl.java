@@ -28,7 +28,10 @@ public class GameServiceImpl implements GameService {
 	@Override
 	public GameDTO getGameBoardByGuid(String guid) {
 		Game game = gameDAO.getGameByGuid(guid);
-		List<Piece> pieces = pieceService.getPiecesByGameId(game.getId());
+
+		List<Piece> pieces = null;
+		if (game != null)
+			pieces = pieceService.getPiecesByGameId(game.getId());
 
 		return new GameDTO(game, pieces);
 	}
@@ -36,33 +39,36 @@ public class GameServiceImpl implements GameService {
 	@Override
 	public GameDTO createGame() {
 		Game game = gameDAO.createGame();
-		List<Piece> pieces = pieceService.createPieces(game.getId());
+
+		List<Piece> pieces = null;
+		if (game != null)
+			pieces = pieceService.createPieces(game.getId());
 
 		return new GameDTO(game, pieces);
 	}
 
 	@Override
 	public GameDTO updateGameStatus(Integer id, GameStatus status) {
-		Game game = gameDAO.updateGame(id, null, status);
-		List<Piece> pieces = pieceService.getPiecesByGameId(id);
-
-		return new GameDTO(game, pieces);
+		//Game game = gameDAO.updateGame(id, null, status);
+		//List<Piece> pieces = pieceService.getPiecesByGameId(id);
+		//return new GameDTO(game, pieces);
+		return null;
 	}
 
 	@Override
 	public GameDTO updateGameResult(Integer id, GameResult result) {
-		Game game = gameDAO.updateGame(id, result, null);
-		List<Piece> pieces = pieceService.getPiecesByGameId(id);
-
-		return new GameDTO(game, pieces);
+		//Game game = gameDAO.updateGame(id, result, null);
+		//List<Piece> pieces = pieceService.getPiecesByGameId(id);
+		//return new GameDTO(game, pieces);
+		return null;
 	}
 
 	@Override
 	public GameDTO updateGameResultAndStatus(Integer id, GameResult result, GameStatus status) {
-		Game game = gameDAO.updateGame(id, result, status);
-		List<Piece> pieces = pieceService.getPiecesByGameId(id);
-
-		return new GameDTO(game, pieces);
+		//Game game = gameDAO.updateGame(id, result, status);
+		//List<Piece> pieces = pieceService.getPiecesByGameId(id);
+		//return new GameDTO(game, pieces);
+		return null;
 	}
 
 	public GameDAO getGameDAO() {
