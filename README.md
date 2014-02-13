@@ -14,7 +14,6 @@ http://localhost:2020/heartbeat/detail
 
 **SQL Table Creation**
 
--- Create syntax for TABLE 'game'
 CREATE TABLE `game` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `guid` varchar(36) NOT NULL DEFAULT '',
@@ -26,7 +25,6 @@ CREATE TABLE `game` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
 
--- Create syntax for TABLE 'piece'
 CREATE TABLE `piece` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `game_id` int(11) unsigned NOT NULL DEFAULT '0',
@@ -38,7 +36,6 @@ CREATE TABLE `piece` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=latin1;
 
--- Create syntax for TABLE 'piece_move'
 CREATE TABLE `piece_move` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `piece_id` int(11) unsigned NOT NULL DEFAULT '0',
