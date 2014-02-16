@@ -2,7 +2,7 @@ package com.richardhoppes.checkers.service;
 
 import com.richardhoppes.checkers.dao.PieceDAO;
 import com.richardhoppes.checkers.model.Piece;
-import com.richardhoppes.checkers.model.value.PieceColor;
+import com.richardhoppes.checkers.model.value.Color;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class PieceServiceImpl implements PieceService {
 	}
 
 	@Override
-	public Piece createPiece(Integer gameId, Integer currentPosition, PieceColor color) {
+	public Piece createPiece(Integer gameId, Integer currentPosition, Color color) {
 		Piece piece = pieceDAO.createPiece(gameId, currentPosition, color);
 		if (piece == null) {
 			return null;
@@ -34,10 +34,10 @@ public class PieceServiceImpl implements PieceService {
 	public List<Piece> createPieces(Integer gameId) {
 		List<Piece> pieces = new ArrayList<Piece>();
 		for (int i = 1; i <= 12; i++) {
-			pieces.add(createPiece(gameId, i, PieceColor.BLACK));
+			pieces.add(createPiece(gameId, i, Color.BLACK));
 		}
 		for (int i = 21; i <= 32; i++) {
-			pieces.add(createPiece(gameId, i, PieceColor.RED));
+			pieces.add(createPiece(gameId, i, Color.RED));
 		}
 		return pieces;
 	}

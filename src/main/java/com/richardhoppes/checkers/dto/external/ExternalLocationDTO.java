@@ -1,10 +1,10 @@
-package com.richardhoppes.checkers.dto;
+package com.richardhoppes.checkers.dto.external;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 @JsonIgnoreProperties({"position"})
-public class LocationDTO {
+public class ExternalLocationDTO {
 
 	private Integer position;
 

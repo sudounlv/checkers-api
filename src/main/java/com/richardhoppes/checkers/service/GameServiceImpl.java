@@ -1,12 +1,15 @@
 package com.richardhoppes.checkers.service;
 
 import com.richardhoppes.checkers.dao.GameDAO;
-import com.richardhoppes.checkers.dto.BoardDTO;
-import com.richardhoppes.checkers.dto.GameDTO;
-import com.richardhoppes.checkers.dto.LocationDTO;
-import com.richardhoppes.checkers.dto.PieceDTO;
+import com.richardhoppes.checkers.dto.external.ExternalGameDTO;
+import com.richardhoppes.checkers.dto.internal.GameDTO;
+import com.richardhoppes.checkers.exception.ServiceException;
 import com.richardhoppes.checkers.model.Game;
+import com.richardhoppes.checkers.model.GamePlayer;
 import com.richardhoppes.checkers.model.Piece;
+import com.richardhoppes.checkers.model.Player;
+import com.richardhoppes.checkers.model.value.Color;
+import com.richardhoppes.checkers.service.util.ApiTranslationUtil;
 
 import java.util.List;
 
@@ -16,64 +19,66 @@ public class GameServiceImpl implements GameService {
 
 	PieceService pieceService;
 
+	PlayerService playerService;
+
 	@Override
-	public com.richardhoppes.checkers.model.Game getGameById(Integer id) {
-		return gameDAO.getGameById(id);
+	public ExternalGameDTO getGameByGuid(String guid) {
+		GameDTO gameDTO = gameDAO.getUberGameByGuid(guid);
+		return ApiTranslationUtil.gameDTOToExternalGameDTO(gameDTO);
 	}
 
 	@Override
-	public com.richardhoppes.checkers.model.Game getGameByGuid(String guid) {
-		return gameDAO.getGameByGuid(guid);
-	}
-
-	@Override
-	public GameDTO getGameBoardByGuid(String guid) {
-		Game game = gameDAO.getGameByGuid(guid);
-
-		List<Piece> pieces = null;
-		if (game != null)
-			pieces = pieceService.getPiecesByGameId(game.getId());
-
-		return buildGameDTO(game, pieces);
-	}
-
-	@Override
-	public GameDTO createGame() {
+	public ExternalGameDTO createGame(String deviceId, Color color) throws ServiceException {
 		Game game = gameDAO.createGame();
 
-		List<Piece> pieces = null;
-		if (game != null)
-			pieces = pieceService.createPieces(game.getId());
+		if (game == null)
+			throw new ServiceException("Error creating game");
 
-		return buildGameDTO(game, pieces);
+		Player player = playerService.createPlayer(deviceId);
+
+		if (player == null)
+			throw new ServiceException("Unable to create or retrieve player.");
+
+		GamePlayer gamePlayer = playerService.createGamePlayer(player.getId(), game.getId(), true, color);
+
+		if (gamePlayer == null)
+			throw new ServiceException("Unable to link player with game.");
+
+		List<Piece> pieces = pieceService.createPieces(game.getId());
+
+		if (pieces == null || pieces.size() == 0)
+			throw new ServiceException("Unable to create game pieces.");
+
+		return ApiTranslationUtil.gameDTOToExternalGameDTO(gameDAO.getUberGameById(game.getId()));
 	}
 
-	private GameDTO buildGameDTO(Game game, List<Piece> pieces) {
+	@Override
+	public ExternalGameDTO joinGame(String gameGuid, String deviceId) throws ServiceException {
+		GameDTO game = gameDAO.getUberGameByGuid(gameGuid);
+
 		if (game == null)
 			return null;
 
-		GameDTO gameDTO = new GameDTO();
-		gameDTO.setId(game.getGuid());
-		gameDTO.setTurn(game.getTurn());
+		if (!game.getCanJoin())
+			throw new ServiceException("Game is already full.");
 
-		BoardDTO boardDTO = new BoardDTO();
-		boardDTO.setSpacesPerSide(8); // This probably won't ever change
+		Player player = playerService.createPlayer(deviceId);
 
-		for (Piece piece : pieces) {
-			PieceDTO pieceDTO = new PieceDTO();
-			pieceDTO.setKing(piece.getKing());
-			pieceDTO.setPieceColor(piece.getColor());
+		if (player == null)
+			throw new ServiceException("Unable to create or retrieve player.");
 
-			LocationDTO locationDTO = new LocationDTO();
-			locationDTO.setPosition(piece.getCurrentPosition());
+		GamePlayer gamePlayer = playerService.createGamePlayer(player.getId(), game.getId(), false, game.getAvailableColor());
 
-			pieceDTO.setLocation(locationDTO);
-			boardDTO.getPieces().add(pieceDTO);
-		}
+		if (gamePlayer == null)
+			throw new ServiceException("Unable to link player with game.");
 
-		gameDTO.setBoard(boardDTO);
-		return gameDTO;
+		return ApiTranslationUtil.gameDTOToExternalGameDTO(game);
 	}
+
+	/*@Override
+	public ExternalGameDTO joinGame(String gameGuid, String deviceId) {
+		return null;
+	}*/
 
 	public GameDAO getGameDAO() {
 		return gameDAO;
@@ -90,5 +95,14 @@ public class GameServiceImpl implements GameService {
 	public void setPieceService(PieceService pieceService) {
 		this.pieceService = pieceService;
 	}
+
+	public PlayerService getPlayerService() {
+		return playerService;
+	}
+
+	public void setPlayerService(PlayerService playerService) {
+		this.playerService = playerService;
+	}
+
 
 }

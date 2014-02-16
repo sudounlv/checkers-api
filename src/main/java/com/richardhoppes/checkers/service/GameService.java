@@ -1,16 +1,15 @@
 package com.richardhoppes.checkers.service;
 
-import com.richardhoppes.checkers.dto.GameDTO;
-import com.richardhoppes.checkers.model.Game;
+import com.richardhoppes.checkers.dto.external.ExternalGameDTO;
+import com.richardhoppes.checkers.exception.ServiceException;
+import com.richardhoppes.checkers.model.value.Color;
 
 public interface GameService {
 
-	public Game getGameById(Integer id);
+	public ExternalGameDTO getGameByGuid(String gameGuid);
 
-	public Game getGameByGuid(String guid);
+	public ExternalGameDTO createGame(String deviceId, Color color) throws ServiceException;
 
-	public GameDTO getGameBoardByGuid(String gameGuid);
-
-	public GameDTO createGame();
+	public ExternalGameDTO joinGame(String gameGuid, String deviceId) throws ServiceException;
 
 }

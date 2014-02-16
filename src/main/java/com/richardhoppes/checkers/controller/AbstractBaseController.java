@@ -2,8 +2,8 @@ package com.richardhoppes.checkers.controller;
 
 import com.richardhoppes.checkers.common.AppInfo;
 import com.richardhoppes.checkers.common.Settings;
-import com.richardhoppes.checkers.exception.PropertyNotFoundException;
-import com.richardhoppes.checkers.exception.ResourceNotFoundException;
+import com.richardhoppes.checkers.exception.*;
+import com.richardhoppes.checkers.exception.GameJoinException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +33,25 @@ public abstract class AbstractBaseController {
 	@ExceptionHandler(ResourceNotFoundException.class)
 	public @ResponseBody Map<String, String> handleException(ResourceNotFoundException ex) {
 		return createStandardErrorResponse(ex.getMessage(), ex.getErrorCode(), HttpStatus.NOT_FOUND);
+	}
+
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(InvalidOrMissingArgument.class)
+	public @ResponseBody Map<String, String> handleException(InvalidOrMissingArgument ex) {
+		return createStandardErrorResponse(ex.getMessage(), ex.getErrorCode(), HttpStatus.BAD_REQUEST);
+	}
+
+	// TODO: Hmm...this shouldn't always be a 500 error...deal with this later
+	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+	@ExceptionHandler(GameJoinException.class)
+	public @ResponseBody Map<String, String> handleException(GameJoinException ex) {
+		return createStandardErrorResponse(ex.getMessage(), ex.getErrorCode(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+	@ExceptionHandler(GameCreateException.class)
+	public @ResponseBody Map<String, String> handleException(GameCreateException ex) {
+		return createStandardErrorResponse(ex.getMessage(), ex.getErrorCode(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	private Map<String, String> createStandardErrorResponse(String message, String errorCode, HttpStatus httpStatus) {

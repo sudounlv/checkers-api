@@ -6,9 +6,7 @@
 	<resultMap id="GameResult" class="com.richardhoppes.checkers.model.Game">
 		<result property="id" column="id"/>
 		<result property="guid" column="guid"/>
-		<result property="turn" column="turn"/>
-		<result property="status" column="status"/>
-		<result property="winner" column="winner"/>
+		<result property="result" column="result"/>
 		<result property="createdAt" column="created_at"/>
 		<result property="modifiedAt" column="modified_at"/>
 	</resultMap>
@@ -27,30 +25,86 @@
 		WHERE guid = #value#
 	</select>
 
+	<resultMap id="GameDTOMap" class="com.richardhoppes.checkers.dto.internal.GameDTO" groupBy="id">
+		<result property="id" column="game_id"/>
+		<result property="guid" column="game_guid"/>
+		<result property="result" column="game_result"/>
+		<result property="createdAt" column="game_created_at"/>
+		<result property="modifiedAt" column="game_modified_at"/>
+		<result property="players" resultMap="Game.PlayerDTOMap"/>
+		<result property="pieces" resultMap="Game.PieceDTOMap"/>
+	</resultMap>
+
+	<resultMap id="PlayerDTOMap" class="com.richardhoppes.checkers.dto.internal.PlayerDTO" groupBy="deviceId">
+		<result property="deviceId" column="player_device_id"/>
+		<result property="isTurn" column="player_is_turn"/>
+		<result property="isCreator" column="player_is_creator"/>
+		<result property="color" column="player_color"/>
+	</resultMap>
+
+	<resultMap id="PieceDTOMap" class="com.richardhoppes.checkers.dto.internal.PieceDTO">
+		<result property="currentPosition" column="piece_current_position"/>
+		<result property="color" column="piece_color"/>
+		<result property="isKing" column="piece_is_king"/>
+		<result property="createdAt" column="piece_created_at"/>
+		<result property="modifiedAt" column="piece_modified_at"/>
+	</resultMap>
+
+	<select id="getUberGameByGuid" parameterClass="java.lang.String" resultMap="Game.GameDTOMap">
+		/* Game.getUberGameByGuid */
+		SELECT
+			g.id AS game_id,
+			g.guid AS game_guid,
+			g.result AS game_result,
+			g.created_at AS game_created_at,
+			g.modified_at AS game_modified_at,
+			p.device_id AS player_device_id,
+			gp.is_turn AS player_is_turn,
+			gp.is_creator AS player_is_creator,
+			gp.color AS player_color,
+			pc.current_position AS piece_current_position,
+			pc.is_king AS piece_is_king,
+			pc.color AS piece_color,
+			pc.created_at AS piece_created_at,
+			pc.modified_at AS piece_modified_at
+		FROM game g
+		JOIN game_player gp ON g.id = gp.game_id
+		JOIN player p ON p.id = gp.player_id
+		JOIN piece pc ON pc.game_id = g.id
+		WHERE g.guid = #value#
+	</select>
+
+	<select id="getUberGameById" parameterClass="java.lang.Integer" resultMap="Game.GameDTOMap">
+		/* Game.getUberGameById */
+		SELECT
+			g.id AS game_id,
+			g.guid AS game_guid,
+			g.result AS game_result,
+			g.created_at AS game_created_at,
+			g.modified_at AS game_modified_at,
+			p.device_id AS player_device_id,
+			gp.is_turn AS player_is_turn,
+			gp.is_creator AS player_is_creator,
+			gp.color AS player_color,
+			pc.current_position AS piece_current_position,
+			pc.is_king AS piece_is_king,
+			pc.color AS piece_color,
+			pc.created_at AS piece_created_at,
+			pc.modified_at AS piece_modified_at
+		FROM game g
+		JOIN game_player gp ON g.id = gp.game_id
+		JOIN player p ON p.id = gp.player_id
+		JOIN piece pc ON pc.game_id = g.id
+		WHERE g.id = #value#
+	</select>
+
 	<insert id="insertGame" parameterClass="java.util.Map">
 		/* Game.insertGame */
-		INSERT INTO game (guid, status, winner, created_at, modified_at)
-		VALUES (UUID(), #status#, #winner#, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())
+		INSERT INTO game (guid, result, created_at, modified_at)
+		VALUES (UUID(), #result#, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())
 		<selectKey resultClass="int" type="post" keyProperty="id">
 			SELECT LAST_INSERT_ID() AS value
 		</selectKey>
 	</insert>
-
-	<update id="updateGame" parameterClass="java.util.Map">
-		/* Game.updateGame */
-		UPDATE game SET
-			<isNotNull property="status">
-				status = #status#,
-			</isNotNull>
-			<isNotNull property="winner">
-				winner = #winner#,
-			</isNotNull>
-			<isNotNull property="turn">
-				turn = #turn#,
-			</isNotNull>
-			dateModifiedAt = UNIX_TIMESTAMP()
-		WHERE
-			intId = #id#
-	</update>
 
 </sqlMap>

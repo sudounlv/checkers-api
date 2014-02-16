@@ -1,7 +1,7 @@
 package com.richardhoppes.checkers.service;
 
 import com.richardhoppes.checkers.model.Piece;
-import com.richardhoppes.checkers.model.value.PieceColor;
+import com.richardhoppes.checkers.model.value.Color;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ public interface PieceService {
 
 	public Piece getPieceById(Integer id);
 
-	public Piece createPiece(Integer gameId, Integer currentPosition, PieceColor color);
+	public Piece createPiece(Integer gameId, Integer currentPosition, Color color);
 
 	public List<Piece> createPieces(Integer gameId);
 

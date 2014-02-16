@@ -1,7 +1,7 @@
 package com.richardhoppes.checkers.dao;
 
 import com.richardhoppes.checkers.model.Piece;
-import com.richardhoppes.checkers.model.value.PieceColor;
+import com.richardhoppes.checkers.model.value.Color;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
@@ -35,7 +35,7 @@ public class PieceDAO extends SqlMapClientDaoSupport{
 		return piece;
 	}
 
-	public Piece createPiece(Integer gameId, Integer currentPosition, PieceColor color) {
+	public Piece createPiece(Integer gameId, Integer currentPosition, Color color) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("gameId", gameId);
 		params.put("color", color);
@@ -48,33 +48,6 @@ public class PieceDAO extends SqlMapClientDaoSupport{
 			piece = getPieceById(id);
 		} catch (SQLException e){
 			LOG.error("Error creating piece: {}", e);
-		}
-
-		return piece;
-	}
-
-	public Piece updatePiece(Integer id, Boolean isKing, Integer currentPosition) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", id);
-
-		if(isKing != null) {
-			params.put("isKing", isKing);
-		} else {
-			params.put("isKing", null);
-		}
-
-		if(currentPosition != null) {
-			params.put("currentPosition", currentPosition);
-		} else {
-			params.put("currentPosition", null);
-		}
-
-		Piece piece = null;
-		try {
-			getSqlMapClient().update("Piece.updatePiece", params);
-			piece = getPieceById(id);
-		} catch (SQLException e){
-			LOG.error("Error updating piece: {}", e);
 		}
 
 		return piece;

@@ -1,13 +1,11 @@
 package com.richardhoppes.checkers.model;
 
-import com.richardhoppes.checkers.model.value.GameResult;
-
 import java.util.Date;
 
-public class Game {
+public class Player {
+
 	private Integer id;
-	private String guid;
-	private GameResult result;
+	private String deviceId;
 	private Date createdAt;
 	private Date modifiedAt;
 
@@ -19,20 +17,12 @@ public class Game {
 		this.id = id;
 	}
 
-	public String getGuid() {
-		return guid;
+	public String getDeviceId() {
+		return deviceId;
 	}
 
-	public void setGuid(String guid) {
-		this.guid = guid;
-	}
-
-	public GameResult getResult() {
-		return result;
-	}
-
-	public void setResult(GameResult result) {
-		this.result = result;
+	public void setDeviceId(String deviceId) {
+		this.deviceId = deviceId;
 	}
 
 	public Date getCreatedAt() {
@@ -50,5 +40,4 @@ public class Game {
 	public void setModifiedAt(Date modifiedAt) {
 		this.modifiedAt = modifiedAt;
 	}
-
 }

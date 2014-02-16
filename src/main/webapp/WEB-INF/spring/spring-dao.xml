@@ -13,4 +13,8 @@
 		<property name="sqlMapClient" ref="readWriteSqlMapClient"/>
 	</bean>
 
+	<bean id="playerDAO" class="com.richardhoppes.checkers.dao.PlayerDAO">
+		<property name="sqlMapClient" ref="readWriteSqlMapClient"/>
+	</bean>
+
 </beans>

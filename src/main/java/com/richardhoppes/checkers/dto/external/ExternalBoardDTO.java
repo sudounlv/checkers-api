@@ -1,14 +1,14 @@
-package com.richardhoppes.checkers.dto;
+package com.richardhoppes.checkers.dto.external;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BoardDTO {
+public class ExternalBoardDTO {
 
 	private Integer spacesPerSide;
-	private List<PieceDTO> pieces = new ArrayList<PieceDTO>();
+	private List<ExternalPieceDTO> pieces = new ArrayList<ExternalPieceDTO>();
 
 	@JsonProperty("spacesPerSide")
 	public Integer getSpacesPerSide() {
@@ -20,11 +20,11 @@ public class BoardDTO {
 	}
 
 	@JsonProperty("pieces")
-	public List<PieceDTO> getPieces() {
+	public List<ExternalPieceDTO> getPieces() {
 		return pieces;
 	}
 
-	public void setPieces(List<PieceDTO> pieces) {
+	public void setPieces(List<ExternalPieceDTO> pieces) {
 		this.pieces = pieces;
 	}
 

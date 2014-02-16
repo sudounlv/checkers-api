@@ -1,9 +1,9 @@
 package com.richardhoppes.checkers.dao;
 
-import com.richardhoppes.checkers.model.value.GameWinner;
-import com.richardhoppes.checkers.model.value.GameStatus;
+import com.richardhoppes.checkers.dto.internal.GameDTO;
 import com.richardhoppes.checkers.model.Game;
-import com.richardhoppes.checkers.model.value.PieceColor;
+import com.richardhoppes.checkers.model.value.GameResult;
+import com.richardhoppes.checkers.model.value.GameStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
@@ -36,47 +36,33 @@ public class GameDAO extends SqlMapClientDaoSupport{
 		return game;
 	}
 
+	public GameDTO getUberGameByGuid(String guid) {
+		GameDTO game = null;
+		try {
+			game = (GameDTO) getSqlMapClient().queryForObject("Game.getUberGameByGuid", guid);
+		} catch (SQLException e){
+			LOG.error("Error getting game by guid: {}", e);
+		}
+		return game;
+	}
+
+	public GameDTO getUberGameById(Integer id) {
+		GameDTO game = null;
+		try {
+			game = (GameDTO) getSqlMapClient().queryForObject("Game.getUberGameById", id);
+		} catch (SQLException e){
+			LOG.error("Error getting game by id: {}", e);
+		}
+		return game;
+	}
+
 	public Game createGame() {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("winner", GameWinner.NONE);
-		params.put("status", GameStatus.IN_PROGRESS);
+		params.put("result", GameResult.NONE);
 
 		Game game = null;
 		try {
 			Integer id = (Integer) getSqlMapClient().insert("Game.insertGame", params);
-			game = getGameById(id);
-		} catch (SQLException e){
-			LOG.error("Error creating game: {}", e);
-		}
-
-		return game;
-	}
-
-	public Game updateGame(Integer id, GameWinner winner, GameStatus status, PieceColor turn) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", id);
-
-		if(winner != null) {
-			params.put("winner", winner);
-		} else {
-			params.put("winner", null);
-		}
-
-		if(status != null) {
-			params.put("status", status);
-		} else {
-			params.put("status", null);
-		}
-
-		if(turn != null) {
-			params.put("turn", turn);
-		} else {
-			params.put("turn", null);
-		}
-
-		Game game = null;
-		try {
-			getSqlMapClient().update("Game.updateGame", params);
 			game = getGameById(id);
 		} catch (SQLException e){
 			LOG.error("Error creating game: {}", e);

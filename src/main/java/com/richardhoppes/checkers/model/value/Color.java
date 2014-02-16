@@ -1,6 +1,6 @@
 package com.richardhoppes.checkers.model.value;
 
-public enum PieceColor {
+public enum Color {
 	RED,
 	BLACK
 }
