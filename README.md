@@ -83,7 +83,7 @@ http://localhost:9090/game/create?deviceId=my-super-unique-device-id&color=BLACK
 
 *****
 
-**POST:** /game/{$gameId}/join/{$deviceId}
+**POST:** /game/{gameId}/join/{deviceId}
 
 **Required Params:**
 * None
