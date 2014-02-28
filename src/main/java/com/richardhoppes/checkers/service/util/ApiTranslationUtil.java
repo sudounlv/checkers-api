@@ -27,6 +27,8 @@ public class ApiTranslationUtil {
 
 			ExternalLocationDTO locationDTO = new ExternalLocationDTO();
 			locationDTO.setPosition(piece.getCurrentPosition());
+			locationDTO.setX(piece.getXPosition());
+			locationDTO.setY(piece.getYPosition());
 
 			externalPieceDTO.setLocation(locationDTO);
 			externalBoardDTO.getPieces().add(externalPieceDTO);

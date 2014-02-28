@@ -2,6 +2,7 @@ package com.richardhoppes.checkers.dao;
 
 import com.richardhoppes.checkers.dto.internal.GameDTO;
 import com.richardhoppes.checkers.model.Game;
+import com.richardhoppes.checkers.model.value.Color;
 import com.richardhoppes.checkers.model.value.GameResult;
 import com.richardhoppes.checkers.model.value.GameStatus;
 import org.slf4j.Logger;

@@ -42,7 +42,7 @@
 		<result property="color" column="player_color"/>
 	</resultMap>
 
-	<resultMap id="PieceDTOMap" class="com.richardhoppes.checkers.dto.internal.PieceDTO">
+	<resultMap id="PieceDTOMap" class="com.richardhoppes.checkers.dto.internal.PieceDTO" groupBy="currentPosition">
 		<result property="currentPosition" column="piece_current_position"/>
 		<result property="color" column="piece_color"/>
 		<result property="isKing" column="piece_is_king"/>

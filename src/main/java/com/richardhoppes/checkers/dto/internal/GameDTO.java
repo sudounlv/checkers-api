@@ -50,7 +50,7 @@ public class GameDTO {
 	}
 
 	public Color getTurn() {
-		Color theGuy = null;
+		Color theGuy = Color.BLACK;
 		for (PlayerDTO player : players) {
 			if (player.getTurn()) {
 				theGuy = player.getColor();
